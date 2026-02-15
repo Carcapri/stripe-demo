@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resultado</title>
+    <link rel="stylesheet" href="/css/payments.css">
+</head>
+<body>
+    <div class="payments-card" style="text-align: center;">
+        <div th:if="${exito}">
+            <h2 style="color:green">¡Pago Exitoso!</h2>
+            <p>Referencia: <span th:text="${ref}"></span></p>
+        </div>
+        <div th:unless="${exito}">
+            <h2 style="color:red">Pago Fallido o Pendiente</h2>
+        </div>
+        <a href="/tienda/">Volver</a>
+    </div>
+</body>
+</html>

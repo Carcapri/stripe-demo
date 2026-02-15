@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pasarela de Pago</title>
+    <link rel="stylesheet" href="/css/payments.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="catalog-container">
+        <div class="producto-item" style="width: 400px; padding: 40px;">
+            <h3>Finalizar Compra</h3>
+            <p>Total: <strong th:text="${amount} + ' EUR'"></strong></p>
+
+            <form id="payment-form">
+                <div id="payment-element">
+                    </div>
+                <button id="submit" style="width: 100%; margin-top: 20px;">Pagar Ahora</button>
+                <div id="error-message" style="color: red; margin-top: 10px;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        
+        const publicKey = /*[[${stripePublicKey}]]*/ '';
+        const clientSecret = /*[[${clientSecret}]]*/ '';
+
+        if (!publicKey || !publicKey.startsWith('pk_')) {
+            document.getElementById('error-message').innerText = "Error: Falta la Clave Pública de Stripe (Revisa application.properties)";
+            // Lanzamos error para detener la ejecución
+            throw new Error("Clave pública inválida");
+        }
+
+        const stripe = Stripe(publicKey);
+        
+        const elements = stripe.elements({ 
+            clientSecret: clientSecret,
+            appearance: { theme: 'stripe' } 
+        });
+        
+        const paymentElement = elements.create('payment');
+        paymentElement.mount('#payment-element');
+
+        const form = document.getElementById('payment-form');
+        
+        form.addEventListener('submit', async (event) => {
+
+            event.preventDefault(); 
+
+            const submitBtn = document.getElementById('submit');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Procesando...";
+
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: window.location.origin + '/tienda/resultado',
+                },
+            });
+
+            if (error) {
+
+                document.getElementById('error-message').innerText = error.message;
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Pagar Ahora";
+            }
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

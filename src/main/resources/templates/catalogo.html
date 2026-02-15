@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tienda</title>
+    <link rel="stylesheet" href="/css/payments.css">
+</head>
+<body>
+
+
+    <div class="catalog-container">
+        
+        <div th:each="prod : ${productos}" class="producto-item">
+            
+            <img th:src="${prod.imagen != null ? prod.imagen : 'https://placehold.co/200'}" alt="Producto">
+            
+            <h4 th:text="${prod.nombre}">Nombre</h4>
+            
+            <p style="color: #5469d4; font-weight: bold; font-size: 1.1em;">
+                <span th:text="${prod.precio}">0</span> 
+                <span th:text="${prod.currency}">EUR</span>
+            </p>
+
+            <form action="/tienda/checkout" method="post" style="width: 100%;">
+                <input type="hidden" name="priceId" th:value="${prod.id}">
+                
+                <div style="display: flex; justify-content: center; gap: 5px; margin-bottom: 10px;">
+                    <label>Cant:</label>
+                    <input type="number" name="quantity" value="1" min="1" max="10" style="width: 50px;">
+                </div>
+                
+                <button type="submit" style="width: 100%;">Comprar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
