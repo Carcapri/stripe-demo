@@ -14,11 +14,14 @@ public class ProductInfo {
         this.price = price;
         this.currency = currency;
     }
-
-    // Getters obligatorios para Thymeleaf
+    
     public String getId() { return id; }
-    public String getName() { return name; }
-    public String getImage() { return imagen; }
-    public double getPrice() { return price; }
+
+    public String getNombre() { return name; } 
+
+    public String getImagen() { return imagen; } 
+
+    public double getPrecio() { return price; } 
+
     public String getCurrency() { return currency; }
 }
