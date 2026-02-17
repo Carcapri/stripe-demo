@@ -48,6 +48,8 @@ public class PaymentService {
                     .setLimit(20L) // Limit to 20 prices
                     .build();
 
+
+
             PriceCollection prices = Price.list(params);
 
             for (Price p : prices.getData()) {
@@ -101,7 +103,19 @@ public class PaymentService {
                 //For only card payments, we can specify the payment method types to avoid confusion
                 .addPaymentMethodType("card")
                 .build();
-        
+
+        /*Python example
+        intent = stripe.PaymentIntent.create(
+            amount=1000,                   
+            currency='eur',                
+            payment_method_types=['card']
+            metadata={
+                "priceId": "price_id_received",
+                "usuario_id": "user"
+            }
+        )
+        */
+    
         PaymentIntent intent = PaymentIntent.create(params);
 
         // Save transaction in DB with status PENDING
