@@ -109,10 +109,7 @@ public class PaymentService {
             amount=1000,                   
             currency='eur',                
             payment_method_types=['card']
-            metadata={
-                "priceId": "price_id_received",
-                "usuario_id": "user"
-            }
+            priceId": 'price_id_received'
         )
         */
     
